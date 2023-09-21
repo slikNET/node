@@ -1,2 +1,4 @@
 .idea
 main_folder
+/node_modules/
+/package-lock.json

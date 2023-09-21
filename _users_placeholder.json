@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "username": "john_doe",
+    "email": "john.doe@example.com",
+    "age": 30
+  },
+  {
+    "id": 2,
+    "username": "jane_smith",
+    "email": "jane.smith@example.com",
+    "age": 28
+  },
+  {
+    "id": 3,
+    "username": "bob_jackson",
+    "email": "bob.jackson@example.com",
+    "age": 35
+  },
+  {
+    "id": 4,
+    "username": "alice_johnson",
+    "email": "alice.johnson@example.com",
+    "age": 26
+  },
+  {
+    "id": 5,
+    "username": "michael_wilson",
+    "email": "michael.wilson@example.com",
+    "age": 32
+  },
+  {
+    "id": 6,
+    "username": "sarah_miller",
+    "email": "sarah.miller@example.com",
+    "age": 29
+  },
+  {
+    "id": 7,
+    "username": "david_brown",
+    "email": "david.brown@example.com",
+    "age": 34
+  },
+  {
+    "id": 8,
+    "username": "emily_smith",
+    "email": "emily.smith@example.com",
+    "age": 27
+  },
+  {
+    "id": 9,
+    "username": "chris_jones",
+    "email": "chris.jones@example.com",
+    "age": 31
+  },
+  {
+    "id": 10,
+    "username": "olivia_davis",
+    "email": "olivia.davis@example.com",
+    "age": 25
+  }
+]
