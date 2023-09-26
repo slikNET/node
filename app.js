@@ -218,5 +218,5 @@ app.delete('/users/:id', (req, res)=>{
 })
 
 app.listen(PORT, () => {
-    console.log('The Sever has been started!');
+    console.log('The Server has been started!');
 })
