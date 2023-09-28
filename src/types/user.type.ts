@@ -3,6 +3,9 @@ import { Document } from "mongoose";
 import { EGenders } from "../enums/gender.enum";
 
 export interface IUser extends Document {
+  // _id?: string;
+  // createdAt?: string;
+  // updatedAt?: string;
   name?: string;
   age?: number;
   genders?: EGenders;
