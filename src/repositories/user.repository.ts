@@ -1,7 +1,7 @@
-import { ObjectSchema } from "joi";
+import { FilterQuery } from "mongoose";
 
 import { User } from "../models/User.model";
-import { IUser } from "../types/user.type";
+import { IUser, IUserCredentials } from "../types/user.type";
 
 class UserRepository {
   public async getAll(): Promise<IUser[]> {
@@ -12,27 +12,22 @@ class UserRepository {
     return await User.findById(id);
   }
 
-  public async getIdByEmail(email: string) {
-    return await User.exists({ email });
-  }
-
-  public async create(value: ObjectSchema): Promise<any> {
-    //  TODO: тут не розібрався який тип має повертатись, тому написав any, хоча в IUser інтерфейсі створив додаткові поля, все одно вивидить помилку
-    return await User.create(value);
-  }
-
-  public async deleteById(id: string) {
-    const { deletedCount } = await User.deleteOne({ _id: id });
-
-    return deletedCount;
-  }
-
-  public async updateById(id: string, value: IUser): Promise<any> {
-    const updatedUser = await User.findByIdAndUpdate(id, value, {
+  public async updateById(userId: string, dto: Partial<IUser>): Promise<IUser> {
+    return await User.findByIdAndUpdate(userId, dto, {
       returnDocument: "after",
     });
+  }
 
-    return updatedUser;
+  public async getOneByParams(params: FilterQuery<IUser>): Promise<IUser> {
+    return await User.findOne(params);
+  }
+
+  public async register(dto: IUserCredentials): Promise<IUser> {
+    return await User.create(dto);
+  }
+
+  public async deleteById(id: string): Promise<void> {
+    await User.deleteOne({ _id: id });
   }
 }
 

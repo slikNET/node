@@ -2,14 +2,15 @@ import { NextFunction, Request, Response } from "express";
 
 import { ApiError } from "../errors/api.error";
 import { userRepository } from "../repositories/user.repository";
-import { UserValidator } from "../validators/user.validator";
+import { passwordService } from "../services/password.service";
+import { IUser } from "../types/user.type";
 
 class UserMiddleware {
   public async getByIdOrThrow(req: Request, res: Response, next: NextFunction) {
     try {
-      const { id } = req.params;
+      const { userId } = req.params;
 
-      const user = await userRepository.findById(id);
+      const user: IUser = await userRepository.findById(userId);
       if (!user) {
         throw new ApiError("User not found", 404);
       }
@@ -22,17 +23,13 @@ class UserMiddleware {
     }
   }
 
-  public async ifExistedByEmail(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-  ) {
+  public async isEmailUniq(req: Request, res: Response, next: NextFunction) {
     try {
       const { email } = req.body;
 
-      const existedUser = await userRepository.getIdByEmail(email);
-      if (existedUser) {
-        throw new ApiError(`User with email ${email} already exist`, 400);
+      const user: IUser = await userRepository.getOneByParams({ email });
+      if (user) {
+        throw new ApiError("User with this email already exist!", 401);
       }
 
       next();
@@ -41,29 +38,14 @@ class UserMiddleware {
     }
   }
 
-  public validDataOnCreate(req: Request, res: Response, next: NextFunction) {
+  public async isEmailExist(req: Request, res: Response, next: NextFunction) {
     try {
-      const { error, value } = UserValidator.create.validate(req.body);
-      if (error) {
-        throw new ApiError(error.message, 400);
+      const { email } = req.body;
+
+      const user: IUser = await userRepository.getOneByParams({ email });
+      if (!user) {
+        throw new ApiError("User with this email does not exist!", 401);
       }
-
-      req.res.locals.user = value;
-
-      next();
-    } catch (e) {
-      next(e);
-    }
-  }
-
-  public validDataOnUpdate(req: Request, res: Response, next: NextFunction) {
-    try {
-      const { error, value } = UserValidator.update.validate(req.body);
-      if (error) {
-        throw new ApiError(error.message, 400);
-      }
-
-      req.res.locals.userData = value;
 
       next();
     } catch (e) {

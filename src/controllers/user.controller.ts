@@ -10,7 +10,7 @@ class UserController {
     next: NextFunction,
   ): Promise<Response<IUser[]>> {
     try {
-      const users = await userService.getAll();
+      const users: IUser[] = await userService.getAll();
 
       return res.status(200).json(users);
     } catch (e) {
@@ -28,13 +28,14 @@ class UserController {
     }
   }
 
-  public async create(req: Request, res: Response, next: NextFunction) {
+  public async updateById(req: Request, res: Response, next: NextFunction) {
     try {
-      const { user } = req.res.locals;
+      const updatedUser: IUser = await userService.updateById(
+        req.params.userId,
+        req.body,
+      );
 
-      const createdUser = await userService.create(user);
-
-      res.status(201).json(createdUser);
+      res.status(201).json(updatedUser);
     } catch (e) {
       next(e);
     }
@@ -42,25 +43,9 @@ class UserController {
 
   public async deleteById(req: Request, res: Response, next: NextFunction) {
     try {
-      const { id } = req.params;
-
-      await userService.deleteById(id);
+      await userService.deleteById(req.params.userId);
 
       res.sendStatus(204);
-    } catch (e) {
-      next(e);
-    }
-  }
-
-  public async updateById(req: Request, res: Response, next: NextFunction) {
-    try {
-      const { id } = req.params;
-
-      const { userData: value } = req.res.locals;
-
-      const updatedUser = await userService.updateById(id, value);
-
-      res.status(201).json(updatedUser);
     } catch (e) {
       next(e);
     }
